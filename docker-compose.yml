@@ -24,7 +24,7 @@ services:
         - GITHUB_TOKEN=$GITHUB_TOKEN
     command: wrench create --directory ./ddl
     volumes:
-      - ./ddl:/go/src/github.com/knocknote/spanner_test/ddl
+      - ./ddl:/go/src/github.com/knocknote/spanner-test/ddl
     environment:
       SPANNER_PROJECT_ID: local-project
       SPANNER_INSTANCE_ID: test-instance
@@ -40,7 +40,7 @@ services:
         - GITHUB_TOKEN=$GITHUB_TOKEN
     command: yo local-project test-instance local-database -o app/domain/model --ignore-tables SchemaMigrations --template-path=go-tool-yo-template/templates/default
     volumes:
-      - ./app:/go/src/github.com/knocknote/spanner_test/app
+      - ./app:/go/src/github.com/knocknote/spanner-test/app
     links:
       - spanner
     environment:
