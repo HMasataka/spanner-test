@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  spanner:
+    image: gcr.io/cloud-spanner-emulator/emulator
+    ports:
+      - "9020:9020"
+      - "9010:9010"
+  spanner-init:
+    image: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+    links:
+      - spanner
+    command: >
+      bash -c 'gcloud config configurations create emulator &&
+                gcloud config set auth/disable_credentials true &&
+                gcloud config set project local-project &&
+                gcloud config set api_endpoint_overrides/spanner http://spanner:9020/ &&
+                gcloud config set auth/disable_credentials true &&
+                gcloud spanner instances create test-instance --config=emulator-config --description=Emulator --nodes=1'
+  create:
+    build:
+      context: tools
+      args:
+        - GITHUB_TOKEN=$GITHUB_TOKEN
+    command: wrench create --directory ./ddl
+    volumes:
+      - ./ddl:/go/src/github.com/knocknote/go-app-auth/ddl
+    environment:
+      SPANNER_PROJECT_ID: local-project
+      SPANNER_INSTANCE_ID: test-instance
+      SPANNER_DATABASE_ID: local-database
+      SPANNER_EMULATOR_HOST: spanner:9010
+      GITHUB_TOKEN: $GITHUB_TOKEN
+    links:
+      - spanner
+  gen-model:
+    build:
+      context: tools
+      args:
+        - GITHUB_TOKEN=$GITHUB_TOKEN
+    command: yo local-project test-instance local-database -o app/domain/model --ignore-tables SchemaMigrations --template-path=go-tool-yo-template/templates/default
+    volumes:
+      - ./app:/go/src/github.com/knocknote/go-app-auth/app
+    links:
+      - spanner
+    environment:
+      SPANNER_EMULATOR_HOST: spanner:9010
+  cli:
+    image: sjdaws/spanner-cli:latest
+    environment:
+      SPANNER_EMULATOR_HOST: "spanner:9010"
+    command: spanner-cli -p local-project -i test-instance -d local-database
