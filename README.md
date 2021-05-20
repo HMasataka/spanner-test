@@ -5,21 +5,22 @@
 * bash
 
 ```bash
-export SPANNER_EMULATOR_HOST=localhost:9010
+export GITHUB_TOKEN=YOUR_TOKEN
 ```
 
 * fish
 
 ```fish
-set -x SPANNER_EMULATOR_HOST localhost:9010
+set -x GITHUB_TOKEN YOUR_TOKEN
 ```
 
 ## 実行
 
 ```bash
-docker-compose up spanner
+docker-compose up -d spanner
 docker-compose run spanner-init
 docker-compose run create
+docker-compose run gen-model
 ```
 
 ## spannerへの接続
