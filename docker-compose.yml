@@ -15,7 +15,6 @@ services:
                 gcloud config set auth/disable_credentials true &&
                 gcloud config set project local-project &&
                 gcloud config set api_endpoint_overrides/spanner http://spanner:9020/ &&
-                gcloud config set auth/disable_credentials true &&
                 gcloud spanner instances create test-instance --config=emulator-config --description=Emulator --nodes=1'
   create:
     build:
