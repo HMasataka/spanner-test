@@ -6,14 +6,12 @@
 
 ```bash
 export SPANNER_EMULATOR_HOST=localhost:9010
-export CREDENTIALS=PATH/TO/firebase-auth.json
 ```
 
 * fish
 
 ```fish
-export SPANNER_EMULATOR_HOST=localhost:9010
-export CREDENTIALS=PATH/TO/firebase-auth.json
+set -x SPANNER_EMULATOR_HOST localhost:9010
 ```
 
 ## 実行
