@@ -15,13 +15,11 @@ import (
 type UserAccessToken struct {
 	UserID    string    `spanner:"UserID" json:"UserID"`       // UserID
 	Score     int64     `spanner:"Score" json:"Score"`         // Score
-	Token     string    `spanner:"Token" json:"Token"`         // Token
 	UpdatedAt time.Time `spanner:"UpdatedAt" json:"UpdatedAt"` // UpdatedAt
 }
 
 const UserAccessToken_UserID = "UserID"
 const UserAccessToken_Score = "Score"
-const UserAccessToken_Token = "Token"
 const UserAccessToken_UpdatedAt = "UpdatedAt"
 
 func UserAccessTokenPrimaryKeys() []string {
@@ -34,7 +32,6 @@ func UserAccessTokenColumns() []string {
 	return []string{
 		UserAccessToken_UserID,
 		UserAccessToken_Score,
-		UserAccessToken_Token,
 		UserAccessToken_UpdatedAt,
 	}
 }
@@ -52,8 +49,6 @@ func (uat *UserAccessToken) columnsToPtrs(cols []string, customPtrs map[string]i
 			ret = append(ret, &uat.UserID)
 		case UserAccessToken_Score:
 			ret = append(ret, &uat.Score)
-		case UserAccessToken_Token:
-			ret = append(ret, &uat.Token)
 		case UserAccessToken_UpdatedAt:
 			ret = append(ret, &uat.UpdatedAt)
 		default:
@@ -71,8 +66,6 @@ func (uat *UserAccessToken) columnsToValues(cols []string) ([]interface{}, error
 			ret = append(ret, uat.UserID)
 		case UserAccessToken_Score:
 			ret = append(ret, uat.Score)
-		case UserAccessToken_Token:
-			ret = append(ret, uat.Token)
 		case UserAccessToken_UpdatedAt:
 			ret = append(ret, uat.UpdatedAt)
 		default:
@@ -108,7 +101,7 @@ func newUserAccessToken_Decoder(cols []string) func(*spanner.Row) (*UserAccessTo
 func (uat *UserAccessToken) Insert(ctx context.Context) *spanner.Mutation {
 	uat.UpdatedAt = spanner.CommitTimestamp
 	return spanner.Insert("UserAccessToken", UserAccessTokenColumns(), []interface{}{
-		uat.UserID, uat.Score, uat.Token, uat.UpdatedAt,
+		uat.UserID, uat.Score, uat.UpdatedAt,
 	})
 }
 
@@ -117,7 +110,7 @@ func (uat *UserAccessToken) Insert(ctx context.Context) *spanner.Mutation {
 func (uat *UserAccessToken) Update(ctx context.Context) *spanner.Mutation {
 	uat.UpdatedAt = spanner.CommitTimestamp
 	return spanner.Update("UserAccessToken", UserAccessTokenColumns(), []interface{}{
-		uat.UserID, uat.Score, uat.Token, uat.UpdatedAt,
+		uat.UserID, uat.Score, uat.UpdatedAt,
 	})
 }
 
@@ -127,7 +120,7 @@ func (uat *UserAccessToken) Update(ctx context.Context) *spanner.Mutation {
 func (uat *UserAccessToken) InsertOrUpdate(ctx context.Context) *spanner.Mutation {
 	uat.UpdatedAt = spanner.CommitTimestamp
 	return spanner.InsertOrUpdate("UserAccessToken", UserAccessTokenColumns(), []interface{}{
-		uat.UserID, uat.Score, uat.Token, uat.UpdatedAt,
+		uat.UserID, uat.Score, uat.UpdatedAt,
 	})
 }
 
