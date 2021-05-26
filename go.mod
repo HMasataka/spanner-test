@@ -4,5 +4,6 @@ go 1.16
 
 require (
 	cloud.google.com/go/spanner v1.18.0
+	google.golang.org/api v0.45.0
 	google.golang.org/grpc v1.38.0
 )
