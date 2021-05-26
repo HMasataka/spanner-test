@@ -15,11 +15,9 @@ func main() {
 		panic(err)
 	}
 
-	for i := 0; i <= 1000000; i++ {
-		err = count(ctx, spannerClient)
-		if err != nil {
-			panic(err)
-		}
+	err = count(ctx, spannerClient)
+	if err != nil {
+		panic(err)
 	}
 
 	return
